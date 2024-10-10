@@ -1,0 +1,62 @@
+/* What does the app's SQL look like? */
+pragma foreign_keys = true;
+
+create table players(
+    id integer primary key autoincrement,
+    name text NOT NUll unique
+    );
+    
+create table levels(
+    id integer primary key autoincrement,
+    level_name text unique);
+    
+    
+create table scores(
+    id integer primary key autoincrement,
+    player_id integer references players(id),
+    score integer,
+    level_id integer references levels(id),
+    check (score >=0)
+    );
+    
+
+    
+  
+   
+    
+insert into players(name) values 
+("simon"),("minhui"),("erik"),("oscar"),("hanna"),("maja");
+
+insert into levels(level_name) values("water_level"),("fire_level"),
+("wind_level"),("earth_level");
+
+
+insert into scores(player_id,score,level_id) values
+(1,345,1), (2,567,2), (3,678,1), (4,2345,3), (5,676,4),
+(6,4765,2),(2,450,2), (3,0,2), (1,4562,4), (4,12,1), (5,462,3),
+(1,11,1),(2,131,2), (3,543,3), (4,121,4),(1,3434,1), (2,12312,2), (3,65,1), (4,54353,3), (5,353,4),(6,2222,2),(2,33433,2), (3,65,2), (1,2342,4), (4,22,1), (5,565,3),(1,2342,1),(2,1333,2), (3,53,3), (4,21,4);
+
+/*Visar hur många poäng spelarna fick på varje bana*/
+select players.name, levels.level_name, scores.score from scores 
+join players  
+on players.id = scores.player_id
+join levels
+on scores.level_id = levels.id
+
+order by players.name;
+
+/*Visar vem som fick mest poäng på vilken bana*/
+select players.name, levels.level_name, max(scores.score) as highscore from scores 
+join players  
+on players.id = scores.player_id
+join levels
+on scores.level_id = levels.id
+group by levels.level_name;
+
+/*Visar vem som fick mest poäng på vilken bana*/
+select players.name, levels.level_name, max(scores.score) as highscore from scores 
+join players  
+on players.id = scores.player_id
+join levels
+on scores.level_id = levels.id
+group by levels.level_name
